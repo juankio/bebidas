@@ -11,17 +11,17 @@
                     <img class="w-32" src="/img/logo.svg" alt="logoTipo">
                     </RouterLink>
                 </div>
-                <nav class="flex gap-4">
+                <nav class="flex gap-4 text-white">
                     <RouterLink
                     :to="{name:'inicio'}"
-                    class="text-white uppercase font-bold"
+                    class=" uppercase font-bold"
                     active-class="text-orange-500"
                     >
                     Inicio
                 </RouterLink>
                     <RouterLink
                     :to="{name:'favoritos'}"
-                    class="text-white uppercase font-bold"
+                    class=" uppercase font-bold"
                     active-class="text-orange-500"
                     >
                     Favoritos
@@ -75,16 +75,27 @@
 import {RouterLink, useRoute} from 'vue-router';
 import {computed } from 'vue'
 import {useBebidasStore} from '../stores/bebidas'
+import {useNotificacionStore} from '../stores/notificacions'
 
 
 const route =useRoute()
 const store = useBebidasStore()
+const notificacion = useNotificacionStore()
 
 const paginaInicio = computed(()=> route.name==='inicio')
-console.log('>:)' )
 
 const handleSumit = ()=>{
-   //validar
+   if(Object.values(store.busqueda).includes('')){
+    // notificacion.text='Todos los campos son obligatorios'
+    // notificacion.mostrar=true
+    // notificacion.error=true
+    notificacion.$patch({
+        text:'Todos los campos son obligatorios',
+        mostrar:true,
+        error:true
+    })
+    return
+   }
 
     store.obtenerRecetas()
 }
